@@ -5,11 +5,16 @@ class ListsController < ApplicationController
   end
 
   def create
-    list = List.new(list_params)
-    list.save
-    # redirect_to '/top' を削除して、以下コードに変更
+    @list = List.new(list_params)
+    if @list.save
+    # if式を用いて、対象のカラムにデータが入力されていればsaveメソッドでtrueが返される。
     # 詳細画面へリダイレクト
-    redirect_to list_path(list.id)
+      redirect_to list_path(@list.id)
+    else
+    # 対象のカラムにデータが入力されていなければ、saveメソッドでfalseが返される
+    # falseならば、新規投稿ページを再表示するように設定
+      render :new
+    end
   end
 
   def index
